@@ -1,6 +1,6 @@
 {
-  "name": "rescript-remix",
-  "version": "0.2.2",
+  "name": "@cobbweb/rescript-remix",
+  "version": "0.2.4",
   "scripts": {
     "build": "rescript",
     "postbuild": "cp lib/js/routing/RouteConventions.js registerRoutes.js",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tom-sherman/rescript-remix.git"
+    "url": "https://github.com/cobbweb/rescript-remix.git"
   },
   "license": "MIT",
   "devDependencies": {
