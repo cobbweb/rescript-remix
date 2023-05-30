@@ -201,6 +201,8 @@ external useBeforeUnload: (@uncurry unit => unit) => unit = "useBeforeUnload"
 
 @module("@remix-run/react") external useLoaderData: unit => 'a = "useLoaderData"
 
+@module("@remix-run/react") external useActionData: unit => 'a = "useActionData"
+
 @module("@remix-run/react") external useFetcher: unit => Fetcher.t = "useFetcher"
 
 @module("@remix-run/react") external useLocation: unit => Location.t = "useLocation"
