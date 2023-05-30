@@ -21,7 +21,7 @@ npm install @cobbweb/rescript-remix
     <summary>🙋 What is each package for?</summary>
     <ul>
       <li> <code>rescript</code> - The ReScript compiler and standard library.
-      <li> <code>rescript-remix</code> - This package. Includes Remix bindings and helpers.
+      <li> <code>@cobbweb/rescript-remix</code> - This package. Includes Remix bindings and helpers.
       <li> <code>patch-package</code> - A tool to patch Remix itself to workaround lack of ESM support (more about this later).
       <li> <code>@rescript/react</code> - React bindings for ReScript.
       <li> <code>rescript-webapi</code> - ReScript bindings for Web Platform APIs eg. <code>fetch</code> and <code>Request</code>
@@ -59,10 +59,10 @@ You'll need to add more packages to this array whenever you receive a Remix erro
 
 ### Enable convention based routing for ReScript modules
 
-Add a `routes` option to `remix.config.js` and inside call the `registerRoutes` function exported by `rescript-remix/registerRoutes`:
+Add a `routes` option to `remix.config.js` and inside call the `registerRoutes` function exported by `@cobbweb/rescript-remix/registerRoutes`:
 
 ```diff
-+ const { registerRoutes } = require('rescript-remix/registerRoutes');
++ const { registerRoutes } = require('@cobbweb/rescript-remix/registerRoutes');
 
  /**
   * @type {import('@remix-run/dev/config').AppConfig}
