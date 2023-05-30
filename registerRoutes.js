@@ -155,8 +155,13 @@ function registerBuiltRoutes(routes, defineRoute, segmentsOpt, param) {
 }
 
 function registerRoutes(defineRoute) {
-  return registerBuiltRoutes(buildRoutesForDir("res-routes"), defineRoute, undefined, undefined);
+  return registerBuiltRoutes(buildRoutesForDir("app/res-routes"), defineRoute, undefined, undefined);
+}
+
+function registerRoutesWithBasePath(defineRoute, basePath) {
+  return registerBuiltRoutes(buildRoutesForDir(basePath), defineRoute, undefined, undefined);
 }
 
 exports.registerRoutes = registerRoutes;
+exports.registerRoutesWithBasePath = registerRoutesWithBasePath;
 /* fs Not a pure module */

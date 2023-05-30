@@ -106,5 +106,9 @@ let rec registerBuiltRoutes = (
 }
 
 let registerRoutes = (defineRoute: defineRoute) => {
-  buildRoutesForDir("res-routes")->registerBuiltRoutes(defineRoute, ())
+  buildRoutesForDir("app/res-routes")->registerBuiltRoutes(defineRoute, ())
+}
+
+let registerRoutesWithBasePath = (defineRoute: defineRoute, basePath: string) => {
+  buildRoutesForDir(basePath)->registerBuiltRoutes(defineRoute, ())
 }
