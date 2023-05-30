@@ -185,7 +185,14 @@ module Await = {
   ) => React.element = "Await"
 }
 
+module Json = {
+  type headersObj
+  type headers = {"status": int, "headers": headersObj}
+}
+
 @module("@remix-run/node") external json: {..} => Webapi.Fetch.Response.t = "json"
+@module("@remix-run/node")
+external jsonWithHeaders: ({..}, Json.headers) => Webapi.Fetch.Response.t = "json"
 
 @module("@remix-run/node") external redirect: string => Webapi.Fetch.Response.t = "redirect"
 
