@@ -1,5 +1,5 @@
 {
-  "name": "rescript-remix",
+  "name": "@cobbweb/rescript-remix",
   "version": "0.2.2",
   "scripts": {
     "build": "rescript",
@@ -30,12 +30,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@glennsl/rescript-jest": "^0.9.0",
-    "@rescript/react": "^0.10.3",
-    "mock-fs": "^5.1.2",
-    "rescript": "*",
-    "rescript-nodejs": "^14.2.0",
-    "rescript-webapi": "^0.3.2"
+    "@glennsl/rescript-jest": "^0.10.0",
+    "@rescript/react": "^0.11.0",
+    "mock-fs": "^5.2.0",
+    "rescript": "^10.1.4",
+    "rescript-nodejs": "^14.4.0",
+    "rescript-webapi": "^0.8.0"
   },
   "jest": {
     "testMatch": [

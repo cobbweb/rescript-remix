@@ -1,8 +1,6 @@
 {
-  "name": "rescript-remix",
-  "bsc-flags": [
-    "-bs-no-version-header"
-  ],
+  "name": "@cobbweb/rescript-remix",
+  "bsc-flags": ["-bs-no-version-header"],
   "sources": [
     {
       "dir": "src",
@@ -26,12 +24,6 @@
     "number": "+A",
     "error": "+A"
   },
-  "bs-dependencies": [
-    "@rescript/react",
-    "rescript-webapi"
-  ],
-  "bs-dev-dependencies": [
-    "@glennsl/rescript-jest",
-    "rescript-nodejs"
-  ]
+  "bs-dependencies": ["@rescript/react", "rescript-webapi"],
+  "bs-dev-dependencies": ["@glennsl/rescript-jest", "rescript-nodejs"]
 }
