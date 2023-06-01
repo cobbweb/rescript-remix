@@ -105,12 +105,13 @@ function filenameToSegment(name) {
   }
 }
 
-function buildRoutesForDir(path) {
+function buildRoutesForDir(appDirectoryOpt, path) {
+  var appDirectory = appDirectoryOpt !== undefined ? appDirectoryOpt : "app";
   var routes = Belt_MutableMapString.make(undefined);
-  var files = Fs.readdirSync(Path.join("app", path));
+  var files = Fs.readdirSync(Path.join(appDirectory, path));
   files.forEach(function (file) {
         var fileInfo = Path.parse(file);
-        var isDirectory = Fs.statSync(Path.join("app", path, file)).isDirectory();
+        var isDirectory = Fs.statSync(Path.join(appDirectory, path, file)).isDirectory();
         if (!(isDirectory || fileInfo.ext === ".js")) {
           return ;
         }
@@ -120,43 +121,48 @@ function buildRoutesForDir(path) {
               nested: undefined
             });
         if (isDirectory) {
-          mapping.nested = Caml_option.some(buildRoutesForDir(Path.join(path, segment)));
+          mapping.nested = Caml_option.some(buildRoutesForDir(appDirectory, Path.join(path, segment)));
         } else {
           mapping.file = Path.join(path, file);
         }
-        return Belt_MutableMapString.set(routes, segment, mapping);
+        Belt_MutableMapString.set(routes, segment, mapping);
       });
   return routes;
 }
 
 function registerBuiltRoutes(routes, defineRoute, segmentsOpt, param) {
   var segments = segmentsOpt !== undefined ? segmentsOpt : [];
-  return Belt_MutableMapString.forEach(routes, (function (segment, definition) {
-                var match = definition.file;
-                var match$1 = definition.nested;
-                if (match === undefined) {
-                  if (match$1 !== undefined) {
-                    return registerBuiltRoutes(Caml_option.valFromOption(match$1), defineRoute, segments.concat([segment]), undefined);
-                  } else {
-                    return Js_exn.raiseError("Invariant error");
-                  }
-                }
-                if (match$1 === undefined) {
-                  return defineRoute(segments.concat([segment]).join("/"), match, {
-                              index: segment === ""
-                            });
-                }
-                var nested = Caml_option.valFromOption(match$1);
-                var isPathlessRoute = segment.startsWith("_");
-                return defineRoute(isPathlessRoute ? undefined : segments.concat([segment]).join("/"), match, (function (param) {
-                              return registerBuiltRoutes(nested, defineRoute, undefined, undefined);
-                            }));
-              }));
+  Belt_MutableMapString.forEach(routes, (function (segment, definition) {
+          var match = definition.file;
+          var match$1 = definition.nested;
+          if (match === undefined) {
+            if (match$1 !== undefined) {
+              return registerBuiltRoutes(Caml_option.valFromOption(match$1), defineRoute, segments.concat([segment]), undefined);
+            } else {
+              return Js_exn.raiseError("Invariant error");
+            }
+          }
+          if (match$1 === undefined) {
+            return defineRoute(segments.concat([segment]).join("/"), match, {
+                        index: segment === ""
+                      });
+          }
+          var nested = Caml_option.valFromOption(match$1);
+          var isPathlessRoute = segment.startsWith("_");
+          defineRoute(isPathlessRoute ? undefined : segments.concat([segment]).join("/"), match, (function (param) {
+                  registerBuiltRoutes(nested, defineRoute, undefined, undefined);
+                }));
+        }));
 }
 
 function registerRoutes(defineRoute) {
-  return registerBuiltRoutes(buildRoutesForDir("res-routes"), defineRoute, undefined, undefined);
+  registerBuiltRoutes(buildRoutesForDir(undefined, "res-routes"), defineRoute, undefined, undefined);
+}
+
+function registerRoutesWithAppDirectory(defineRoute, appDirectory) {
+  registerBuiltRoutes(buildRoutesForDir(appDirectory, "res-routes"), defineRoute, undefined, undefined);
 }
 
 exports.registerRoutes = registerRoutes;
+exports.registerRoutesWithAppDirectory = registerRoutesWithAppDirectory;
 /* fs Not a pure module */

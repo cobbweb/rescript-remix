@@ -50,20 +50,21 @@ let filenameToSegment = (name: string): string => {
   }
 }
 
-let rec buildRoutesForDir = (path: string) => {
+let rec buildRoutesForDir = (~appDirectory="app", path: string) => {
   let routes = Map.make()
 
-  let files = NodeJs.Fs.readdirSync(NodeJs.Path.join(["app", path]))
+  let files = NodeJs.Fs.readdirSync(NodeJs.Path.join([appDirectory, path]))
   Js.Array2.forEach(files, file => {
     let fileInfo = file->NodeJs.Path.parse
-    let isDirectory = ["app", path, file]->NodeJs.Path.join->statSync->NodeJs.Fs.Stats.isDirectory
+    let isDirectory =
+      [appDirectory, path, file]->NodeJs.Path.join->statSync->NodeJs.Fs.Stats.isDirectory
 
     if isDirectory || fileInfo.ext === ".js" {
       let segment = (isDirectory ? fileInfo.base : fileInfo.name)->filenameToSegment
       let mapping = routes->Map.getWithDefault(segment, {file: None, nested: None})
 
       if isDirectory {
-        mapping.nested = Some(buildRoutesForDir(NodeJs.Path.join([path, segment])))
+        mapping.nested = Some(buildRoutesForDir(NodeJs.Path.join([path, segment]), ~appDirectory))
       } else {
         mapping.file = Some(NodeJs.Path.join([path, file]))
       }
@@ -107,4 +108,8 @@ let rec registerBuiltRoutes = (
 
 let registerRoutes = (defineRoute: defineRoute) => {
   buildRoutesForDir("res-routes")->registerBuiltRoutes(defineRoute, ())
+}
+
+let registerRoutesWithAppDirectory = (defineRoute: defineRoute, appDirectory: string) => {
+  buildRoutesForDir("res-routes", ~appDirectory)->registerBuiltRoutes(defineRoute, ())
 }
